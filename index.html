@@ -136,18 +136,44 @@
       </div>
     </section>
 
-    <section id="about" class="py-24 sm:py-32 bg-white">
-      <div class="max-w-6xl mx-auto px-5 sm:px-6">
-        <div class="grid lg:grid-cols-[1fr_1.3fr] gap-12">
+    <section id="about" class="py-24 sm:py-32 bg-white border-t border-black/[.04]">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
-            <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-4">About</p>
-            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Design with purpose.</h2>
+            <p class="reveal text-xs font-semibold text-[#2563EB] uppercase tracking-widest mb-4">About</p>
+            <h2 class="reveal d1 text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-tight mb-8">Designing interfaces<br>Building better experiences.</h2>
+            <div class="reveal d2 space-y-4 text-[#4B5563] leading-relaxed text-base sm:text-[17px]">
+              <p>I’m a UI/UX Designer with front-end experience, focused on creating clear, practical, and visually refined
+                digital interfaces. My work spans wireframes, user flows, high-fidelity UI, prototypes, and responsive web
+                implementation.
+              </p>
+              <p>I’ve worked across fintech, enterprise applications, and media, collaborating with teams to turn business and
+                user needs into intuitive digital experiences. I also create visual communication materials such as promotional
+                posts and banners.</p>
+              <p>With a background in front-end development, I can bridge the gap between design and implementation, translating
+                interfaces into responsive web experiences using HTML and CSS.</p>
+            </div>
+            <!-- <div class="reveal d3 mt-10 flex flex-wrap gap-2">${['UI Design','UX Research','Design Systems','Responsive Web','Front-End Development'].map(x=>`<span class="text-sm font-semibold px-4 py-2 bg-[#EFF6FF] text-[#2563EB] rounded-full">${x}</span>`).join('')}</div> -->
           </div>
-          <div class="text-lg text-[#4B5563] leading-relaxed space-y-5">
-            <p>I'm a UI/UX Analyst and Product Designer with front-end experience. I enjoy turning complex requirements into
-              interfaces that feel clear, useful, and considered.</p>
-            <p>My work sits between user needs, business goals, and implementation — from flows and wireframes to high-fidelity
-              UI, design systems, and prototypes.</p>
+          <div>
+            <div class="reveal d2 mb-10">
+              <p class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-widest mb-5">Skills & Tools</p>
+              <div id="skills" class="flex flex-wrap gap-2"></div>
+            </div>
+            <div class="reveal d3 rounded-2xl bg-[#171717] p-8 text-white">
+              <p class="text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">Design Philosophy</p>
+              <div class="space-y-5">
+                <div class="flex gap-4"><span class="text-xs font-bold text-[#2563EB]">01</span>
+                  <p class="text-sm text-white/70">Understand before designing — research shapes every decision.</p>
+                </div>
+                <div class="flex gap-4"><span class="text-xs font-bold text-[#2563EB]">02</span>
+                  <p class="text-sm text-white/70">Clarity over cleverness — the best UI is invisible.</p>
+                </div>
+                <div class="flex gap-4"><span class="text-xs font-bold text-[#2563EB]">03</span>
+                  <p class="text-sm text-white/70">Systems thinking — good design scales with the product.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
