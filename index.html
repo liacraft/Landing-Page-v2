@@ -125,6 +125,12 @@
       .visual-masonry-info { transform: none; }
     }
   </style>
+<style id="visual-gallery-masonry-styles">
+  .gallery-masonry-item {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+  }
+</style>
 </head>
 
 <body>
@@ -643,107 +649,104 @@
         </section>`;
 
       if (p.type === 'gallery') {
-    const sections = p.gallery || [];
-    const allItems = sections.flatMap(section =>
-      (section.items || []).map(item => ({
-        ...item,
-        section: section.category
-      }))
-    );
+        const sections = p.gallery || [];
+        const allItems = sections.flatMap(section =>
+          (section.items || []).map(item => ({
+            ...item,
+            section: section.category
+          }))
+        );
 
-    const filterId = `gallery-filter-${p.id || 'visual'}`;
-    const gridId = `gallery-grid-${p.id || 'visual'}`;
+        const filterId = `gallery-filter-${p.id || 'visual'}`;
+        const gridId = `gallery-grid-${p.id || 'visual'}`;
 
-    const renderGallery = (active = 'All') => {
-      const filtered = active === 'All'
-        ? allItems
-        : allItems.filter(item => item.section === active);
+        const renderGallery = (active = 'All') => {
+          const filtered = active === 'All'
+            ? allItems
+            : allItems.filter(item => item.section === active);
 
-      const grid = document.getElementById(gridId);
-      if (!grid) return;
+          const grid = document.getElementById(gridId);
+          if (!grid) return;
 
-      grid.innerHTML = filtered.map((item, index) => `
-        <button
-          type="button"
-          class="gallery-masonry-item group relative mb-5 block w-full overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          data-gallery-index="${index}"
-          aria-label="View ${item.title}"
-        >
-          <img
-            src="${item.image}"
-            alt="${item.title}"
-            class="block h-auto w-full object-cover transition duration-500 ease-out group-hover:scale-[1.025]"
-            loading="lazy"
-          />
-          <span class="pointer-events-none absolute inset-0 flex items-end bg-black/0 p-5 opacity-0 transition duration-300 group-hover:bg-black/55 group-hover:opacity-100 max-sm:bg-black/45 max-sm:opacity-100">
-            <span class="block translate-y-2 transition duration-300 group-hover:translate-y-0">
-              <span class="block text-sm font-semibold text-white">${item.title}</span>
-              <span class="mt-1 block text-xs text-white/75">${item.section} · ${item.year}</span>
-            </span>
-          </span>
-        </button>
-      `).join('');
-
-      grid.querySelectorAll('.gallery-masonry-item').forEach((button, index) => {
-        button.addEventListener('click', () => {
-          const item = filtered[index];
-          if (item) showImage(item.image, item.title);
-        });
-      });
-    };
-
-    detail.innerHTML = `
-      <div class="mx-auto max-w-6xl">
-        <div class="mb-10">
-          <div class="mb-4 flex flex-wrap gap-2">
-            <span class="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium">Visual Showcase</span>
-            <span class="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium">${allItems.length} Assets</span>
-          </div>
-
-          <h2 class="text-3xl font-semibold tracking-tight">${p.title}</h2>
-          <p class="mt-3 max-w-3xl text-sm leading-6 text-neutral-500">${p.description}</p>
-
-          <div class="mt-5 flex flex-wrap gap-6 text-sm text-neutral-500">
-            <div><span class="text-neutral-400">Role</span><br><strong class="text-neutral-800">${p.role}</strong></div>
-            <div><span class="text-neutral-400">Year</span><br><strong class="text-neutral-800">${p.year}</strong></div>
-            <div><span class="text-neutral-400">Tools</span><br><strong class="text-neutral-800">${p.tools.join(' · ')}</strong></div>
-          </div>
-        </div>
-
-        <div id="${filterId}" class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter visual design category">
-          <button type="button" data-filter="All"
-            class="gallery-filter active rounded-full border border-neutral-900 bg-neutral-900 px-4 py-2 text-xs font-medium text-white transition">
-            All
-          </button>
-          ${sections.map(section => `
-            <button type="button" data-filter="${section.category}"
-              class="gallery-filter rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-900">
-              ${section.category}
+          grid.innerHTML = filtered.map((item, index) => `
+            <button
+              onclick="showImage('${item.image}','${item.title}')"
+              class="gallery-masonry-item group relative mb-5 block w-full overflow-hidden rounded-2xl bg-white border border-black/[.06] cursor-zoom-in text-left"
+              aria-label="View ${item.title}"
+            >
+              <img
+                src="${item.image}"
+                alt="${item.title}"
+                class="block w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.015]"
+                loading="lazy"
+              >
+              <span class="pointer-events-none absolute inset-0 flex items-end bg-black/0 p-5 opacity-0 transition duration-300 group-hover:bg-black/55 group-hover:opacity-100 max-sm:bg-black/45 max-sm:opacity-100">
+                <span class="block translate-y-2 transition duration-300 group-hover:translate-y-0">
+                  <span class="block text-sm font-semibold text-white">${item.title}</span>
+                  <span class="mt-1 block text-xs text-white/75">${item.section} · ${item.year}</span>
+                </span>
+              </span>
             </button>
-          `).join('')}
-        </div>
+          `).join('');
+        };
 
-        <div id="${gridId}" class="columns-1 gap-5 sm:columns-2 lg:columns-3 [column-fill:_balance]"></div>
-      </div>
-    `;
+        detail.innerHTML =
+          `<header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]"><div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between"><button onclick="closeProject()" class="text-sm font-bold hover:text-[#2563EB]">← Back to work</button><span class="text-xs font-bold uppercase tracking-[.16em] text-[#9CA3AF]">Project detail</span></div></header>
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pt-16 sm:pt-24 pb-14">
+            <div class="grid lg:grid-cols-[1fr_320px] gap-12 lg:gap-20">
+              <div>
+                <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-5">${p.category}</p>
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[.98]">${p.title}</h1>
+                <p class="mt-7 text-lg sm:text-xl text-[#6B7280] leading-relaxed max-w-2xl">${p.description}</p>
+              </div>
+              <aside class="border-t lg:border-t-0 lg:border-l border-black/[.08] pt-7 lg:pt-1 lg:pl-8">
+                <div class="space-y-7">
+                  <div><p class="label">Role</p><p class="value">${p.role}</p></div>
+                  <div><p class="label">Year</p><p class="value">${p.year}</p></div>
+                  <div><p class="label">Tools</p><div class="flex flex-wrap gap-2">${p.tools.map(t=>`<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E5E7EB]">${t}</span>`).join('')}</div></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24">
+            <div class="mb-8">
+              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Visual Showcase</p>
+              <div class="flex items-end justify-between gap-6 flex-wrap">
+                <div>
+                  <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Selected Visuals</h2>
+                  <p class="text-sm text-[#9CA3AF] mt-2">${allItems.length} assets · click to view larger</p>
+                </div>
+              </div>
+            </div>
+            <div id="${filterId}" class="flex flex-wrap gap-2 mb-8" role="group" aria-label="Filter visual design category">
+              <button type="button" data-filter="All" class="gallery-filter active rounded-full border border-neutral-900 bg-neutral-900 px-4 py-2 text-xs font-medium text-white transition">All</button>
+              ${sections.map(section => `<button type="button" data-filter="${section.category}" class="gallery-filter rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-900">${section.category}</button>`).join('')}
+            </div>
+            <div id="${gridId}" class="columns-1 md:columns-2 lg:columns-3 gap-5"></div>
+          </section>
+          ${previousNext}`;
 
-    const filterWrap = document.getElementById(filterId);
-    filterWrap.querySelectorAll('.gallery-filter').forEach(button => {
-      button.addEventListener('click', () => {
-        filterWrap.querySelectorAll('.gallery-filter').forEach(btn => {
-          btn.classList.remove('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
-          btn.classList.add('border-neutral-200', 'bg-white', 'text-neutral-600');
+        detail.querySelectorAll('.label').forEach(x => x.className =
+          'text-[11px] font-bold uppercase tracking-[.16em] text-[#9CA3AF] mb-2');
+        detail.querySelectorAll('.value').forEach(x => x.className = 'text-sm font-semibold');
+
+        const filterWrap = document.getElementById(filterId);
+        filterWrap.querySelectorAll('.gallery-filter').forEach(button => {
+          button.addEventListener('click', () => {
+            filterWrap.querySelectorAll('.gallery-filter').forEach(btn => {
+              btn.classList.remove('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
+              btn.classList.add('border-neutral-200', 'bg-white', 'text-neutral-600');
+            });
+
+            button.classList.add('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
+            button.classList.remove('border-neutral-200', 'bg-white', 'text-neutral-600');
+
+            renderGallery(button.dataset.filter);
+          });
         });
 
-        button.classList.add('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
-        button.classList.remove('border-neutral-200', 'bg-white', 'text-neutral-600');
-
-        renderGallery(button.dataset.filter);
-      });
-    });
-
-    renderGallery('All');
-  } else {
+        renderGallery('All');
+      } else {
         detail.innerHTML = `
           <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
