@@ -52,6 +52,78 @@
     .no-scroll {
       overflow: hidden;
     }
+
+    .visual-masonry {
+      column-count: 3;
+      column-gap: 1.25rem;
+    }
+
+    .visual-masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+    }
+
+    .visual-masonry-card {
+      position: relative;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: #EDEBE7;
+      border: 1px solid rgba(0,0,0,.06);
+      cursor: zoom-in;
+    }
+
+    .visual-masonry-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: transform .55s cubic-bezier(.2,.7,.2,1);
+    }
+
+    .visual-masonry-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.1rem;
+      background: linear-gradient(to top, rgba(17,24,39,.82), rgba(17,24,39,.12) 58%, transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .visual-masonry-info {
+      transform: translateY(8px);
+      transition: transform .3s ease;
+    }
+
+    .visual-masonry-card:hover img,
+    .visual-masonry-card:focus-visible img {
+      transform: scale(1.035);
+    }
+
+    .visual-masonry-card:hover .visual-masonry-overlay,
+    .visual-masonry-card:focus-visible .visual-masonry-overlay {
+      opacity: 1;
+    }
+
+    .visual-masonry-card:hover .visual-masonry-info,
+    .visual-masonry-card:focus-visible .visual-masonry-info {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1023px) {
+      .visual-masonry { column-count: 2; }
+    }
+
+    @media (max-width: 639px) {
+      .visual-masonry { column-count: 1; }
+      .visual-masonry-overlay {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(17,24,39,.72), transparent 55%);
+      }
+      .visual-masonry-info { transform: none; }
+    }
   </style>
 </head>
 
@@ -571,100 +643,107 @@
         </section>`;
 
       if (p.type === 'gallery') {
-        const totalItems = p.gallery.reduce((sum, section) => sum + section.items.length, 0);
+    const sections = p.gallery || [];
+    const allItems = sections.flatMap(section =>
+      (section.items || []).map(item => ({
+        ...item,
+        section: section.category
+      }))
+    );
 
-        detail.innerHTML = `
-          <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
-            <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
-              <button onclick="closeProject()" class="text-sm font-bold hover:text-[#2563EB]">← Back to work</button>
-              <span class="text-xs font-bold uppercase tracking-[.16em] text-[#9CA3AF]">Visual showcase</span>
-            </div>
-          </header>
+    const filterId = `gallery-filter-${p.id || 'visual'}`;
+    const gridId = `gallery-grid-${p.id || 'visual'}`;
 
-          <section class="max-w-7xl mx-auto px-5 sm:px-6 pt-16 sm:pt-24 pb-14">
-            <div class="grid lg:grid-cols-[1fr_320px] gap-12 lg:gap-20">
-              <div>
-                <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-5">${p.category}</p>
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[.98]">${p.title}</h1>
-                <p class="mt-7 text-lg sm:text-xl text-[#6B7280] leading-relaxed max-w-2xl">${p.description}</p>
-              </div>
+    const renderGallery = (active = 'All') => {
+      const filtered = active === 'All'
+        ? allItems
+        : allItems.filter(item => item.section === active);
 
-              <aside class="border-t lg:border-t-0 lg:border-l border-black/[.08] pt-7 lg:pt-1 lg:pl-8">
-                <div class="space-y-7">
-                  <div>
-                    <p class="label">Role</p>
-                    <p class="value">${p.role}</p>
-                  </div>
-                  <div>
-                    <p class="label">Year</p>
-                    <p class="value">${p.year}</p>
-                  </div>
-                  <div>
-                    <p class="label">Tools</p>
-                    <div class="flex flex-wrap gap-2">
-                      ${p.tools.map(t => `<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E5E7EB]">${t}</span>`).join('')}
-                    </div>
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </section>
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
 
-          <section class="max-w-4xl mx-auto px-5 sm:px-6 pb-16">
-            <div class="border-t border-black/[.08] pt-8">
-              <div class="flex items-center justify-between gap-5">
-                <div>
-                  <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Selected Work</p>
-                  <p class="text-lg sm:text-xl leading-relaxed text-[#374151]">
-                    A curated collection of visual assets created across product promotion, internal communication, and monthly reporting.
-                  </p>
-                </div>
-                <span class="hidden sm:inline-flex shrink-0 text-xs font-semibold px-3 py-2 rounded-full bg-white border border-[#E5E7EB]">
-                  ${totalItems} assets
-                </span>
-              </div>
-            </div>
-          </section>
+      grid.innerHTML = filtered.map((item, index) => `
+        <button
+          type="button"
+          class="gallery-masonry-item group relative mb-5 block w-full overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          data-gallery-index="${index}"
+          aria-label="View ${item.title}"
+        >
+          <img
+            src="${item.image}"
+            alt="${item.title}"
+            class="block h-auto w-full object-cover transition duration-500 ease-out group-hover:scale-[1.025]"
+            loading="lazy"
+          />
+          <span class="pointer-events-none absolute inset-0 flex items-end bg-black/0 p-5 opacity-0 transition duration-300 group-hover:bg-black/55 group-hover:opacity-100 max-sm:bg-black/45 max-sm:opacity-100">
+            <span class="block translate-y-2 transition duration-300 group-hover:translate-y-0">
+              <span class="block text-sm font-semibold text-white">${item.title}</span>
+              <span class="mt-1 block text-xs text-white/75">${item.section} · ${item.year}</span>
+            </span>
+          </span>
+        </button>
+      `).join('');
 
-          <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24">
-            ${p.gallery.map(section => `
-              <div class="mb-20 last:mb-0">
-                <div class="mb-7">
-                  <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">${section.category}</p>
-                  <p class="text-sm sm:text-base text-[#6B7280] max-w-2xl leading-relaxed">${section.description}</p>
-                </div>
+      grid.querySelectorAll('.gallery-masonry-item').forEach((button, index) => {
+        button.addEventListener('click', () => {
+          const item = filtered[index];
+          if (item) showImage(item.image, item.title);
+        });
+      });
+    };
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  ${section.items.map(item => `
-                    <article class="group">
-                      <button
-                        onclick="showImage('${item.image}','${item.title}')"
-                        class="block w-full cursor-zoom-in rounded-2xl overflow-hidden bg-white border border-black/[.06]">
-                        <div class="aspect-[4/5] overflow-hidden bg-[#EDEBE7]">
-                          <img
-                            src="${item.image}"
-                            alt="${item.title}"
-                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                        </div>
-                      </button>
+    detail.innerHTML = `
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-10">
+          <div class="mb-4 flex flex-wrap gap-2">
+            <span class="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium">Visual Showcase</span>
+            <span class="rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium">${allItems.length} Assets</span>
+          </div>
 
-                      <div class="pt-4 flex justify-between gap-3">
-                        <div>
-                          <h3 class="font-bold">${item.title}</h3>
-                          <p class="mt-1 text-sm text-[#6B7280]">${section.category}</p>
-                        </div>
-                        <span class="text-xs font-semibold text-[#9CA3AF]">${item.year}</span>
-                      </div>
-                    </article>
-                  `).join('')}
-                </div>
-              </div>
-            `).join('')}
-          </section>
+          <h2 class="text-3xl font-semibold tracking-tight">${p.title}</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-neutral-500">${p.description}</p>
 
-          ${previousNext}
-        `;
-      } else {
+          <div class="mt-5 flex flex-wrap gap-6 text-sm text-neutral-500">
+            <div><span class="text-neutral-400">Role</span><br><strong class="text-neutral-800">${p.role}</strong></div>
+            <div><span class="text-neutral-400">Year</span><br><strong class="text-neutral-800">${p.year}</strong></div>
+            <div><span class="text-neutral-400">Tools</span><br><strong class="text-neutral-800">${p.tools.join(' · ')}</strong></div>
+          </div>
+        </div>
+
+        <div id="${filterId}" class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter visual design category">
+          <button type="button" data-filter="All"
+            class="gallery-filter active rounded-full border border-neutral-900 bg-neutral-900 px-4 py-2 text-xs font-medium text-white transition">
+            All
+          </button>
+          ${sections.map(section => `
+            <button type="button" data-filter="${section.category}"
+              class="gallery-filter rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-600 transition hover:border-neutral-400 hover:text-neutral-900">
+              ${section.category}
+            </button>
+          `).join('')}
+        </div>
+
+        <div id="${gridId}" class="columns-1 gap-5 sm:columns-2 lg:columns-3 [column-fill:_balance]"></div>
+      </div>
+    `;
+
+    const filterWrap = document.getElementById(filterId);
+    filterWrap.querySelectorAll('.gallery-filter').forEach(button => {
+      button.addEventListener('click', () => {
+        filterWrap.querySelectorAll('.gallery-filter').forEach(btn => {
+          btn.classList.remove('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
+          btn.classList.add('border-neutral-200', 'bg-white', 'text-neutral-600');
+        });
+
+        button.classList.add('active', 'border-neutral-900', 'bg-neutral-900', 'text-white');
+        button.classList.remove('border-neutral-200', 'bg-white', 'text-neutral-600');
+
+        renderGallery(button.dataset.filter);
+      });
+    });
+
+    renderGallery('All');
+  } else {
         detail.innerHTML = `
           <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
             <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
@@ -755,7 +834,8 @@
     };
     document.getElementById('menuBtn').onclick = () => document.getElementById('mobileMenu').classList.toggle('hidden');
     const steps = [
-      ['01', 'Discover', 'Research the problem space through stakeholder interviews, user research, and competitive analysis.'
+      ['01', 'Discover',
+        'Research the problem space through stakeholder interviews, user research, and competitive analysis.'
       ],
       ['02', 'Define', 'Synthesize findings into problem statements, user flows, and design criteria.'],
       ['03', 'Design', 'Explore concepts from wireframes to high-fidelity prototypes and iterate quickly.'],
