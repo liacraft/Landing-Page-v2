@@ -412,25 +412,52 @@
         role: 'Graphic Designer',
         tools: ['Figma', 'Adobe Illustrator', 'Adobe Photoshop'],
         description: 'A collection of promotional and communication assets designed to support digital campaigns, internal initiatives, and product communication.',
-        overview: 'Alongside UI/UX projects, I create visual assets for various communication and promotional needs, translating campaign objectives into clear and engaging visual compositions.',
-        contribution: [
-          'Designed digital posters and promotional assets for internal campaigns and product communication.',
-          'Developed visual concepts, layouts, typography, and supporting graphic elements based on campaign requirements.',
-          'Adapted designs across different formats and communication channels while maintaining visual consistency.',
-          'Collaborated with stakeholders to refine visual direction and incorporate feedback.'
+        type: 'gallery',
+        galleryIntro: 'A collection of digital posters and promotional assets created for internal campaigns, events, and product communication.',
+        gallery: [
+          {
+            image: './assets/poster01.jpg',
+            title: 'Promotional Poster',
+            category: 'Promotional Design',
+            year: '2025'
+          },
+          {
+            image: './assets/poster02.jpg',
+            title: 'Internal Campaign',
+            category: 'Internal Communication',
+            year: '2025'
+          },
+          {
+            image: './assets/poster03.jpg',
+            title: 'Event Promotion',
+            category: 'Event Design',
+            year: '2025'
+          },
+          {
+            image: './assets/poster04.jpg',
+            title: 'Digital Campaign',
+            category: 'Campaign Design',
+            year: '2026'
+          },
+          {
+            image: './assets/poster05.jpg',
+            title: 'Product Communication',
+            category: 'Product Communication',
+            year: '2026'
+          }
         ],
-        images: ['./assets/hris01.jpg',
-          './assets/hris02.jpg',
-          './assets/hris03.jpg',
-          './assets/hris04.jpg',
-          './assets/hris05.jpg'
+        images: ['./assets/poster01.jpg',
+          './assets/poster02.jpg',
+          './assets/poster03.jpg',
+          './assets/poster04.jpg',
+          './assets/poster05.jpg'
         ]
       }
     ];
-    const filters = ['All', 'Product Design', 'UI/UX', 'Web'];
+    const filters = ['All', 'Product Design', 'UI/UX', 'Web', 'Visual Design'];
     const filterOf = p => ['Mobile Application', 'Enterprise Product'].includes(p.category) ? 'Product Design' : [
-      'Corporate Website', 'Streaming Platform'
-    ].includes(p.category) ? 'Web' : 'UI/UX';
+      'Corporate Website', 'Website', 'Streaming Platform'
+    ].includes(p.category) ? 'Web' : p.category === 'Visual Design' ? 'Visual Design' : 'UI/UX';
     let currentFilter = 'All';
     const grid = document.getElementById('projectGrid'),
       filterEl = document.getElementById('filters');
@@ -444,7 +471,7 @@
     function renderGrid() {
       const list = currentFilter === 'All' ? projects : projects.filter(p => filterOf(p) === currentFilter);
       grid.innerHTML = list.map((p, i) =>
-        `<a href="#project/${p.id}" onclick="openProject('${p.id}');return false" class="project-card group block reveal is-visible"><div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDEBE7] border border-black/[.05]"><img src="${p.images[0]}" alt="${p.title}" class="absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="absolute left-4 right-4 bottom-4 flex justify-between items-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><span class="text-xs font-bold uppercase tracking-wider text-white">View project</span><span class="w-9 h-9 rounded-full bg-white flex items-center justify-center">↗</span></div></div><div class="pt-4 flex justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[.14em] text-[#2563EB] mb-2">${p.category}</p><h3 class="text-lg font-bold">${p.title}</h3><p class="mt-2 text-sm leading-relaxed text-[#6B7280]">${p.description}</p></div><span class="text-xs font-semibold text-[#9CA3AF]">${p.year.split(' ')[0]}</span></div></a>`
+        `<a href="#project/${p.id}" onclick="openProject('${p.id}');return false" class="project-card group block reveal is-visible"><div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDEBE7] border border-black/[.05]"><img src="${p.type === 'gallery' ? p.gallery[0].image : p.images[0]}" alt="${p.title}" class="absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="absolute left-4 right-4 bottom-4 flex justify-between items-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><span class="text-xs font-bold uppercase tracking-wider text-white">View project</span><span class="w-9 h-9 rounded-full bg-white flex items-center justify-center">↗</span></div></div><div class="pt-4 flex justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[.14em] text-[#2563EB] mb-2">${p.category}</p><h3 class="text-lg font-bold">${p.title}</h3><p class="mt-2 text-sm leading-relaxed text-[#6B7280]">${p.description}</p></div><span class="text-xs font-semibold text-[#9CA3AF]">${p.year.split(' ')[0]}</span></div></a>`
       ).join('')
     }
 
@@ -458,14 +485,184 @@
       const p = projects.find(x => x.id === id);
       if (!p) return;
       document.body.classList.add('no-scroll');
+
       const detail = document.getElementById('detail');
       detail.classList.remove('hidden');
-      detail.innerHTML =
-        `<header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]"><div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between"><button onclick="closeProject()" class="text-sm font-bold hover:text-[#2563EB]">← Back to work</button><span class="text-xs font-bold uppercase tracking-[.16em] text-[#9CA3AF]">Project detail</span></div></header><section class="max-w-7xl mx-auto px-5 sm:px-6 pt-16 sm:pt-24 pb-14"><div class="grid lg:grid-cols-[1fr_320px] gap-12 lg:gap-20"><div><p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-5">${p.category}</p><h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[.98]">${p.title}</h1><p class="mt-7 text-lg sm:text-xl text-[#6B7280] leading-relaxed max-w-2xl">${p.description}</p></div><aside class="border-t lg:border-t-0 lg:border-l border-black/[.08] pt-7 lg:pt-1 lg:pl-8"><div class="space-y-7"><div><p class="label">Role</p><p class="value">${p.role}</p></div><div><p class="label">Year</p><p class="value">${p.year}</p></div><div><p class="label">Tools</p><div class="flex flex-wrap gap-2">${p.tools.map(t=>`<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E5E7EB]">${t}</span>`).join('')}</div></div></div></aside></div></section><section class="max-w-7xl mx-auto px-5 sm:px-6 pb-16"><button onclick="showImage('${p.images[0]}','${p.title}')" class="block w-full cursor-zoom-in rounded-3xl overflow-hidden bg-white border border-black/[.06]"><img src="${p.images[0]}" alt="${p.title}" class="w-full max-h-[720px] object-cover"></button></section><section class="max-w-4xl mx-auto px-5 sm:px-6 pb-20"><div class="grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-12"><p class="label">Overview</p><p class="text-lg sm:text-xl leading-relaxed text-[#374151]">${p.overview}</p></div><div class="grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-12 mt-14 pt-14 border-t border-black/[.08]"><p class="label">My Contribution</p><ul class="space-y-4">${p.contribution.map(x=>`<li class="flex gap-3 text-base sm:text-lg leading-relaxed text-[#374151]"><span class="mt-3 w-1.5 h-1.5 rounded-full bg-[#2563EB] shrink-0"></span>${x}</li>`).join('')}</ul></div></section><section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24"><div class="mb-8"><p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Design</p><h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Screens & mockups</h2><p class="text-sm text-[#9CA3AF] mt-2">${p.images.length} image${p.images.length===1?'':'s'} · click to view larger</p></div><div class="grid grid-cols-1 md:grid-cols-2 gap-5">${p.images.map((img,i)=>`<button onclick="showImage('${img}','${p.title} screen ${i+1}')" class="rounded-2xl overflow-hidden bg-white border border-black/[.06] cursor-zoom-in"><img src="${img}" alt="${p.title} screen ${i+1}" class="w-full aspect-[4/3] object-cover hover:scale-[1.015] transition-transform duration-500"></button>`).join('')}</div></section><section class="border-t border-black/[.08]"><div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 flex justify-between">${projects[projects.indexOf(p)-1]?`<button onclick="openProject('${projects[projects.indexOf(p)-1].id}')" class="text-left"><p class="label">Previous</p><p class="font-bold">← ${projects[projects.indexOf(p)-1].title}</p></button>`:'<span></span>'}${projects[projects.indexOf(p)+1]?`<button onclick="openProject('${projects[projects.indexOf(p)+1].id}')" class="text-right"><p class="label">Next</p><p class="font-bold">${projects[projects.indexOf(p)+1].title} →</p></button>`:'<span></span>'}</div></section>`;
+
+      const projectIndex = projects.indexOf(p);
+      const previousProject = projects[projectIndex - 1];
+      const nextProject = projects[projectIndex + 1];
+
+      const previousNext = `
+        <section class="border-t border-black/[.08]">
+          <div class="max-w-7xl mx-auto px-5 sm:px-6 py-8 flex justify-between">
+            ${previousProject
+              ? `<button onclick="openProject('${previousProject.id}')" class="text-left">
+                  <p class="label">Previous</p>
+                  <p class="font-bold">← ${previousProject.title}</p>
+                </button>`
+              : '<span></span>'}
+            ${nextProject
+              ? `<button onclick="openProject('${nextProject.id}')" class="text-right">
+                  <p class="label">Next</p>
+                  <p class="font-bold">${nextProject.title} →</p>
+                </button>`
+              : '<span></span>'}
+          </div>
+        </section>`;
+
+      if (p.type === 'gallery') {
+        const gallery = p.gallery || [];
+
+        detail.innerHTML = `
+          <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
+              <button onclick="closeProject()" class="text-sm font-bold hover:text-[#2563EB]">← Back to work</button>
+              <span class="text-xs font-bold uppercase tracking-[.16em] text-[#9CA3AF]">Visual showcase</span>
+            </div>
+          </header>
+
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pt-16 sm:pt-24 pb-14">
+            <div class="grid lg:grid-cols-[1fr_320px] gap-12 lg:gap-20">
+              <div>
+                <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-5">${p.category}</p>
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[.98]">${p.title}</h1>
+                <p class="mt-7 text-lg sm:text-xl text-[#6B7280] leading-relaxed max-w-2xl">${p.description}</p>
+              </div>
+
+              <aside class="border-t lg:border-t-0 lg:border-l border-black/[.08] pt-7 lg:pt-1 lg:pl-8">
+                <div class="space-y-7">
+                  <div>
+                    <p class="label">Role</p>
+                    <p class="value">${p.role}</p>
+                  </div>
+                  <div>
+                    <p class="label">Year</p>
+                    <p class="value">${p.year}</p>
+                  </div>
+                  <div>
+                    <p class="label">Tools</p>
+                    <div class="flex flex-wrap gap-2">
+                      ${p.tools.map(t => `<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E5E7EB]">${t}</span>`).join('')}
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="max-w-4xl mx-auto px-5 sm:px-6 pb-16">
+            <div class="border-t border-black/[.08] pt-8">
+              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Showcase</p>
+              <p class="text-lg sm:text-xl leading-relaxed text-[#374151] max-w-3xl">${p.galleryIntro}</p>
+            </div>
+          </section>
+
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24">
+            <div class="mb-8">
+              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Selected Works</p>
+              <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Posters & visual assets</h2>
+              <p class="text-sm text-[#9CA3AF] mt-2">${gallery.length} visual${gallery.length === 1 ? '' : 's'} · click to view larger</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              ${gallery.map((item, i) => `
+                <article class="group">
+                  <button
+                    onclick="showImage('${item.image}','${item.title}')"
+                    class="block w-full cursor-zoom-in rounded-2xl overflow-hidden bg-white border border-black/[.06]">
+                    <div class="aspect-[4/5] overflow-hidden bg-[#EDEBE7]">
+                      <img
+                        src="${item.image}"
+                        alt="${item.title}"
+                        class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                    </div>
+                  </button>
+                  <div class="pt-4">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 class="font-bold">${item.title}</h3>
+                        <p class="mt-1 text-sm text-[#6B7280]">${item.category}</p>
+                      </div>
+                      <span class="text-xs font-semibold text-[#9CA3AF]">${item.year}</span>
+                    </div>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+
+          ${previousNext}
+        `;
+
+      } else {
+        detail.innerHTML = `
+          <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
+            <div class="max-w-7xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
+              <button onclick="closeProject()" class="text-sm font-bold hover:text-[#2563EB]">← Back to work</button>
+              <span class="text-xs font-bold uppercase tracking-[.16em] text-[#9CA3AF]">Project detail</span>
+            </div>
+          </header>
+
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pt-16 sm:pt-24 pb-14">
+            <div class="grid lg:grid-cols-[1fr_320px] gap-12 lg:gap-20">
+              <div>
+                <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.2em] mb-5">${p.category}</p>
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[.98]">${p.title}</h1>
+                <p class="mt-7 text-lg sm:text-xl text-[#6B7280] leading-relaxed max-w-2xl">${p.description}</p>
+              </div>
+              <aside class="border-t lg:border-t-0 lg:border-l border-black/[.08] pt-7 lg:pt-1 lg:pl-8">
+                <div class="space-y-7">
+                  <div><p class="label">Role</p><p class="value">${p.role}</p></div>
+                  <div><p class="label">Year</p><p class="value">${p.year}</p></div>
+                  <div>
+                    <p class="label">Tools</p>
+                    <div class="flex flex-wrap gap-2">${p.tools.map(t => `<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E5E7EB]">${t}</span>`).join('')}</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-16">
+            <button onclick="showImage('${p.images[0]}','${p.title}')" class="block w-full cursor-zoom-in rounded-3xl overflow-hidden bg-white border border-black/[.06]">
+              <img src="${p.images[0]}" alt="${p.title}" class="w-full max-h-[720px] object-cover">
+            </button>
+          </section>
+
+          <section class="max-w-4xl mx-auto px-5 sm:px-6 pb-20">
+            <div class="grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-12">
+              <p class="label">Overview</p>
+              <p class="text-lg sm:text-xl leading-relaxed text-[#374151]">${p.overview}</p>
+            </div>
+
+            <div class="grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-12 mt-14 pt-14 border-t border-black/[.08]">
+              <p class="label">My Contribution</p>
+              <ul class="space-y-4">
+                ${p.contribution.map(x => `<li class="flex gap-3 text-base sm:text-lg leading-relaxed text-[#374151]"><span class="mt-3 w-1.5 h-1.5 rounded-full bg-[#2563EB] shrink-0"></span>${x}</li>`).join('')}
+              </ul>
+            </div>
+          </section>
+
+          <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24">
+            <div class="mb-8">
+              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Design</p>
+              <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Screens & mockups</h2>
+              <p class="text-sm text-[#9CA3AF] mt-2">${p.images.length} image${p.images.length === 1 ? '' : 's'} · click to view larger</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              ${p.images.map((img, i) => `<button onclick="showImage('${img}','${p.title} screen ${i + 1}')" class="rounded-2xl overflow-hidden bg-white border border-black/[.06] cursor-zoom-in"><img src="${img}" alt="${p.title} screen ${i + 1}" class="w-full aspect-[4/3] object-cover hover:scale-[1.015] transition-transform duration-500"></button>`).join('')}
+            </div>
+          </section>
+
+          ${previousNext}
+        `;
+      }
+
       detail.querySelectorAll('.label').forEach(x => x.className =
         'text-[11px] font-bold uppercase tracking-[.16em] text-[#9CA3AF] mb-2');
       detail.querySelectorAll('.value').forEach(x => x.className = 'text-sm font-semibold');
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
 
     function closeProject() {
