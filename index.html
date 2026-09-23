@@ -405,52 +405,42 @@
         ]
       },
       {
-        id: 'design',
-        title: 'Promotional & Graphic Design',
+        id: 'visual-design',
+        title: 'Visual Communication & Promotional Design',
         category: 'Visual Design',
         year: '2024 — 2026',
-        role: 'Graphic Designer',
+        role: 'UI/UX Analyst',
         tools: ['Figma', 'Adobe Illustrator', 'Adobe Photoshop'],
-        description: 'A collection of promotional and communication assets designed to support digital campaigns, internal initiatives, and product communication.',
+        description: 'A collection of promotional, communication, and infographic assets created to support digital products, internal campaigns, and business communication.',
         type: 'gallery',
-        galleryIntro: 'A collection of digital posters and promotional assets created for internal campaigns, events, and product communication.',
         gallery: [
           {
-            image: './assets/poster01.jpg',
-            title: 'Promotional Poster',
-            category: 'Promotional Design',
-            year: '2025'
+            category: 'MTF Mobile',
+            description: 'Promotional and product communication assets created for MTF Mobile.',
+            items: [
+              { image: './assets/mtf-mobile/poster-01.jpg', title: 'Payment Campaign', year: '2025' },
+              { image: './assets/mtf-mobile/poster-02.jpg', title: 'Virtual Account', year: '2025' },
+              { image: './assets/mtf-mobile/poster-03.jpg', title: 'Product Promotion', year: '2025' }
+            ]
           },
           {
-            image: './assets/poster02.jpg',
-            title: 'Internal Campaign',
+            category: 'Monthly Report',
+            description: 'Infographics and visual reports supporting monthly digital performance reporting.',
+            items: [
+              { image: './assets/monthly-report/infographic-01.jpg', title: 'Digital Performance Report', year: '2025' },
+              { image: './assets/monthly-report/infographic-02.jpg', title: 'Transaction Overview', year: '2025' },
+              { image: './assets/monthly-report/infographic-03.jpg', title: 'KPI Overview', year: '2026' }
+            ]
+          },
+          {
             category: 'Internal Communication',
-            year: '2025'
-          },
-          {
-            image: './assets/poster03.jpg',
-            title: 'Event Promotion',
-            category: 'Event Design',
-            year: '2025'
-          },
-          {
-            image: './assets/poster04.jpg',
-            title: 'Digital Campaign',
-            category: 'Campaign Design',
-            year: '2026'
-          },
-          {
-            image: './assets/poster05.jpg',
-            title: 'Product Communication',
-            category: 'Product Communication',
-            year: '2026'
+            description: 'Visual assets created for internal campaigns, announcements, and company initiatives.',
+            items: [
+              { image: './assets/internal-communication/poster-01.jpg', title: 'Internal Campaign', year: '2025' },
+              { image: './assets/internal-communication/poster-02.jpg', title: 'Company Announcement', year: '2025' },
+              { image: './assets/internal-communication/poster-03.jpg', title: 'Employee Communication', year: '2026' }
+            ]
           }
-        ],
-        images: ['./assets/poster01.jpg',
-          './assets/poster02.jpg',
-          './assets/poster03.jpg',
-          './assets/poster04.jpg',
-          './assets/poster05.jpg'
         ]
       }
     ];
@@ -468,10 +458,17 @@
       ).join('')
     }
 
+    function getProjectThumbnail(p) {
+      if (p.type === 'gallery' && p.gallery?.length && p.gallery[0].items?.length) {
+        return p.gallery[0].items[0].image;
+      }
+      return p.images[0];
+    }
+
     function renderGrid() {
       const list = currentFilter === 'All' ? projects : projects.filter(p => filterOf(p) === currentFilter);
       grid.innerHTML = list.map((p, i) =>
-        `<a href="#project/${p.id}" onclick="openProject('${p.id}');return false" class="project-card group block reveal is-visible"><div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDEBE7] border border-black/[.05]"><img src="${p.type === 'gallery' ? p.gallery[0].image : p.images[0]}" alt="${p.title}" class="absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="absolute left-4 right-4 bottom-4 flex justify-between items-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><span class="text-xs font-bold uppercase tracking-wider text-white">View project</span><span class="w-9 h-9 rounded-full bg-white flex items-center justify-center">↗</span></div></div><div class="pt-4 flex justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[.14em] text-[#2563EB] mb-2">${p.category}</p><h3 class="text-lg font-bold">${p.title}</h3><p class="mt-2 text-sm leading-relaxed text-[#6B7280]">${p.description}</p></div><span class="text-xs font-semibold text-[#9CA3AF]">${p.year.split(' ')[0]}</span></div></a>`
+        `<a href="#project/${p.id}" onclick="openProject('${p.id}');return false" class="project-card group block reveal is-visible"><div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDEBE7] border border-black/[.05]"><img src="${getProjectThumbnail(p)}" alt="${p.title}" class="absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="absolute left-4 right-4 bottom-4 flex justify-between items-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><span class="text-xs font-bold uppercase tracking-wider text-white">View project</span><span class="w-9 h-9 rounded-full bg-white flex items-center justify-center">↗</span></div></div><div class="pt-4 flex justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[.14em] text-[#2563EB] mb-2">${p.category}</p><h3 class="text-lg font-bold">${p.title}</h3><p class="mt-2 text-sm leading-relaxed text-[#6B7280]">${p.description}</p></div><span class="text-xs font-semibold text-[#9CA3AF]">${p.year.split(' ')[0]}</span></div></a>`
       ).join('')
     }
 
@@ -484,6 +481,7 @@
     function openProject(id) {
       const p = projects.find(x => x.id === id);
       if (!p) return;
+
       document.body.classList.add('no-scroll');
 
       const detail = document.getElementById('detail');
@@ -512,7 +510,7 @@
         </section>`;
 
       if (p.type === 'gallery') {
-        const gallery = p.gallery || [];
+        const totalItems = p.gallery.reduce((sum, section) => sum + section.items.length, 0);
 
         detail.innerHTML = `
           <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
@@ -553,48 +551,58 @@
 
           <section class="max-w-4xl mx-auto px-5 sm:px-6 pb-16">
             <div class="border-t border-black/[.08] pt-8">
-              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Showcase</p>
-              <p class="text-lg sm:text-xl leading-relaxed text-[#374151] max-w-3xl">${p.galleryIntro}</p>
+              <div class="flex items-center justify-between gap-5">
+                <div>
+                  <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Selected Work</p>
+                  <p class="text-lg sm:text-xl leading-relaxed text-[#374151]">
+                    A curated collection of visual assets created across product promotion, internal communication, and monthly reporting.
+                  </p>
+                </div>
+                <span class="hidden sm:inline-flex shrink-0 text-xs font-semibold px-3 py-2 rounded-full bg-white border border-[#E5E7EB]">
+                  ${totalItems} assets
+                </span>
+              </div>
             </div>
           </section>
 
           <section class="max-w-7xl mx-auto px-5 sm:px-6 pb-24">
-            <div class="mb-8">
-              <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">Selected Works</p>
-              <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Posters & visual assets</h2>
-              <p class="text-sm text-[#9CA3AF] mt-2">${gallery.length} visual${gallery.length === 1 ? '' : 's'} · click to view larger</p>
-            </div>
+            ${p.gallery.map(section => `
+              <div class="mb-20 last:mb-0">
+                <div class="mb-7">
+                  <p class="text-xs font-bold text-[#2563EB] uppercase tracking-[.18em] mb-3">${section.category}</p>
+                  <p class="text-sm sm:text-base text-[#6B7280] max-w-2xl leading-relaxed">${section.description}</p>
+                </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              ${gallery.map((item, i) => `
-                <article class="group">
-                  <button
-                    onclick="showImage('${item.image}','${item.title}')"
-                    class="block w-full cursor-zoom-in rounded-2xl overflow-hidden bg-white border border-black/[.06]">
-                    <div class="aspect-[4/5] overflow-hidden bg-[#EDEBE7]">
-                      <img
-                        src="${item.image}"
-                        alt="${item.title}"
-                        class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
-                    </div>
-                  </button>
-                  <div class="pt-4">
-                    <div class="flex items-start justify-between gap-3">
-                      <div>
-                        <h3 class="font-bold">${item.title}</h3>
-                        <p class="mt-1 text-sm text-[#6B7280]">${item.category}</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  ${section.items.map(item => `
+                    <article class="group">
+                      <button
+                        onclick="showImage('${item.image}','${item.title}')"
+                        class="block w-full cursor-zoom-in rounded-2xl overflow-hidden bg-white border border-black/[.06]">
+                        <div class="aspect-[4/5] overflow-hidden bg-[#EDEBE7]">
+                          <img
+                            src="${item.image}"
+                            alt="${item.title}"
+                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500">
+                        </div>
+                      </button>
+
+                      <div class="pt-4 flex justify-between gap-3">
+                        <div>
+                          <h3 class="font-bold">${item.title}</h3>
+                          <p class="mt-1 text-sm text-[#6B7280]">${section.category}</p>
+                        </div>
+                        <span class="text-xs font-semibold text-[#9CA3AF]">${item.year}</span>
                       </div>
-                      <span class="text-xs font-semibold text-[#9CA3AF]">${item.year}</span>
-                    </div>
-                  </div>
-                </article>
-              `).join('')}
-            </div>
+                    </article>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
           </section>
 
           ${previousNext}
         `;
-
       } else {
         detail.innerHTML = `
           <header class="sticky top-0 z-10 bg-[#F9F8F6]/90 backdrop-blur-md border-b border-black/[.06]">
