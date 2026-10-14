@@ -173,24 +173,69 @@
   </header>
 
   <main>
-    <section id="home" class="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden">
-      <div class="absolute inset-0 pointer-events-none opacity-70" style="background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:64px 64px"></div>
-      <div class="max-w-7xl mx-auto px-5 sm:px-6 w-full relative">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div class="reveal inline-flex items-center gap-2 mb-8"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-sm font-medium text-[#6B7280]">Open to new opportunities</span></div>
-            <h1 class="reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6">Hi, I'm<br><span class="text-[#2563EB]">Amalia.</span></h1>
-            <p class="reveal text-lg font-semibold text-[#6B7280] mb-4 uppercase tracking-wide">UI/UX Designer with Front-End Experience</p>
-            <p class="reveal text-base sm:text-lg text-[#4B5563] leading-relaxed max-w-md mb-10">I design thoughtful digital experiences, combining user needs, business goals, and clean interfaces with front-end
-              implementation.</p>
-            <div class="reveal flex flex-wrap gap-3"><a href="#work" class="px-6 py-3.5 bg-[#2563EB] text-white text-sm font-semibold rounded-full hover:bg-[#1D4ED8]">View My Work <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="https://liacraft.github.io/Landing-Page-v2/assets/Portfolio-Amalia.pdf" target="_blank" download="Portfolio-Amalia.pdf" rel="noopener noreferrer"
-                class="px-6 py-3.5 border border-[#171717]/20 rounded-full text-sm font-semibold hover:bg-white"><i class="fa-solid fa-download"></i> Download Resume</a>
-            </div>
-          </div>
+    
+<section id="home" class="relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden">
+  <!-- Background Grid -->
+  <div
+    class="absolute inset-0 pointer-events-none opacity-70"
+    style="background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:64px 64px">
+  </div>
+
+  <!-- Hero Content -->
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 w-full relative">
+    <div class="flex justify-center">
+      <div class="w-full max-w-3xl text-center">
+
+        <!-- Availability Status -->
+        <div class="reveal inline-flex items-center justify-center gap-2 mb-8 is-visible">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-sm font-medium text-[#6B7280]">
+            Open to new opportunities
+          </span>
         </div>
+
+        <!-- Heading -->
+        <h1 class="reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 is-visible">
+          Hi, I'm
+          <br>
+          <span class="text-[#2563EB]">Amalia.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="reveal text-base sm:text-lg font-semibold text-[#6B7280] mb-4 uppercase tracking-wide is-visible">
+          UI/UX Designer with Front-End Experience
+        </p>
+
+        <!-- Description -->
+        <p class="reveal text-base sm:text-lg text-[#4B5563] leading-relaxed max-w-2xl mx-auto mb-10 is-visible">
+          I design intuitive digital experiences by aligning user needs
+          with business goals and translating them into clean, functional interfaces.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="reveal flex flex-wrap justify-center gap-3 is-visible">
+          <a
+            href="#work"
+            class="inline-flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] text-white text-sm font-semibold rounded-full hover:bg-[#1D4ED8] transition-colors">
+            View My Work
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+
+          <a
+            href="https://liacraft.github.io/Landing-Page-v2/assets/Portfolio-Amalia.pdf"
+            target="_blank"
+            download="Portfolio-Amalia.pdf"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3.5 border border-[#171717]/20 rounded-full text-sm font-semibold hover:bg-white transition-colors">
+            <i class="fa-solid fa-download"></i>
+            Download Resume
+          </a>
+        </div>
+
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
     <section id="work" class="py-24 sm:py-32">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
