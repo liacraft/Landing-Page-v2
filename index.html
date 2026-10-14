@@ -239,6 +239,310 @@
     animation: none;
   }
 }
+    
+/* ========================================
+   HERO BACKGROUND
+======================================== */
+
+.hero-section {
+  isolation: isolate;
+  background: #FAF9F7;
+}
+
+/* Grid */
+.hero-grid {
+  z-index: 0;
+  opacity: 0.7;
+  background-image:
+    linear-gradient(rgba(31, 41, 55, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 41, 55, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Gradient Orbs */
+.hero-orb {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.hero-orb-left {
+  width: min(46vw, 620px);
+  height: min(46vw, 620px);
+  top: -25%;
+  left: -18%;
+  background: radial-gradient(
+    circle at 55% 55%,
+    rgba(96, 165, 250, 0.27) 0%,
+    rgba(147, 197, 253, 0.20) 35%,
+    rgba(196, 181, 253, 0.12) 58%,
+    transparent 72%
+  );
+  animation: orb-drift-left 14s ease-in-out infinite alternate;
+}
+
+.hero-orb-right {
+  width: min(50vw, 680px);
+  height: min(50vw, 680px);
+  right: -20%;
+  bottom: -30%;
+  background: radial-gradient(
+    circle at 45% 45%,
+    rgba(59, 130, 246, 0.23) 0%,
+    rgba(96, 165, 250, 0.19) 34%,
+    rgba(167, 139, 250, 0.15) 57%,
+    transparent 72%
+  );
+  animation: orb-drift-right 17s ease-in-out infinite alternate;
+}
+
+/* Ambient Glows */
+.hero-glow {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(55px);
+  will-change: transform, opacity;
+}
+
+.hero-glow-top {
+  width: 24px;
+  height: 24px;
+  top: 25%;
+  right: 27%;
+  background: rgba(56, 189, 248, 0.7);
+  opacity: 0.55;
+  animation: glow-pulse 5s ease-in-out infinite;
+}
+
+.hero-glow-bottom {
+  width: 34px;
+  height: 34px;
+  left: 20%;
+  bottom: 13%;
+  background: rgba(59, 130, 246, 0.55);
+  opacity: 0.4;
+  animation: glow-pulse 7s ease-in-out infinite reverse;
+}
+
+/* Orbit Circles */
+.hero-orbit {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px dashed rgba(59, 130, 246, 0.24);
+  border-radius: 50%;
+}
+
+.hero-orbit-left {
+  width: 640px;
+  height: 640px;
+  top: -18%;
+  left: -12%;
+  animation: orbit-drift-left 22s ease-in-out infinite alternate;
+}
+
+.hero-orbit-right {
+  width: 700px;
+  height: 700px;
+  right: -17%;
+  bottom: -45%;
+  animation: orbit-drift-right 26s ease-in-out infinite alternate;
+}
+
+/* Floating Dots */
+.hero-dot {
+  position: absolute;
+  z-index: 1;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #60A5FA;
+  box-shadow: 0 0 16px 5px rgba(96, 165, 250, 0.25);
+  pointer-events: none;
+  animation: dot-float 6s ease-in-out infinite alternate;
+}
+
+.hero-dot-one {
+  top: 30%;
+  right: 15%;
+}
+
+.hero-dot-two {
+  bottom: 23%;
+  left: 29%;
+  animation-delay: -3s;
+}
+
+/* ========================================
+   TYPING ANIMATION
+======================================== */
+
+.name-typing {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  border-right: 4px solid #2563EB;
+  padding-right: 3px;
+  animation:
+    name-typing 1.2s steps(7, end) 0.4s forwards,
+    cursor-blink 0.7s step-end infinite;
+}
+
+@keyframes name-typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 7ch;
+  }
+}
+
+@keyframes cursor-blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* ========================================
+   KEYFRAMES: BACKGROUND
+======================================== */
+
+@keyframes orb-drift-left {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(35px, 25px, 0) scale(1.06);
+  }
+}
+
+@keyframes orb-drift-right {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-30px, -25px, 0) scale(1.08);
+  }
+}
+
+@keyframes orbit-drift-left {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(20px, 12px) rotate(5deg);
+  }
+}
+
+@keyframes orbit-drift-right {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(-18px, -12px) rotate(-4deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes dot-float {
+  from {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  to {
+    transform: translateY(-14px);
+    opacity: 0.9;
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+  .hero-grid {
+    background-size: 48px 48px;
+    opacity: 0.55;
+  }
+
+  .hero-orb-left {
+    width: 100vw;
+    height: 100vw;
+    top: -8%;
+    left: -48%;
+  }
+
+  .hero-orb-right {
+    width: 100vw;
+    height: 100vw;
+    right: -48%;
+    bottom: -12%;
+  }
+
+  .hero-orbit-left {
+    width: 380px;
+    height: 380px;
+    top: -5%;
+    left: -48%;
+  }
+
+  .hero-orbit-right {
+    width: 420px;
+    height: 420px;
+    right: -55%;
+    bottom: -10%;
+  }
+
+  .hero-glow-top {
+    top: 22%;
+    right: 12%;
+  }
+
+  .hero-glow-bottom {
+    left: 10%;
+    bottom: 15%;
+  }
+
+  .hero-dot-one {
+    right: 9%;
+  }
+
+  .hero-dot-two {
+    left: 12%;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb,
+  .hero-glow,
+  .hero-orbit,
+  .hero-dot {
+    animation: none !important;
+  }
+
+  .name-typing {
+    width: 7ch;
+    animation: none;
+    border-right: none;
+  }
+}
+
 
   </style>
 </head>
@@ -260,17 +564,30 @@
   <main>
     
 
+
 <section id="home" class="hero-section relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden">
 
-  <!-- Background Grid -->
-  <div
-    class="absolute inset-0 pointer-events-none opacity-70"
-    style="background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:64px 64px">
-  </div>
+  <!-- Base Background -->
+  <div class="absolute inset-0 bg-[#FAF9F7] pointer-events-none"></div>
 
-  <!-- Animated Background Glow -->
-  <div class="hero-glow hero-glow-one"></div>
-  <div class="hero-glow hero-glow-two"></div>
+  <!-- Grid Background -->
+  <div class="hero-grid absolute inset-0 pointer-events-none"></div>
+
+  <!-- Gradient Orbs -->
+  <div class="hero-orb hero-orb-left"></div>
+  <div class="hero-orb hero-orb-right"></div>
+
+  <!-- Ambient Glows -->
+  <div class="hero-glow hero-glow-top"></div>
+  <div class="hero-glow hero-glow-bottom"></div>
+
+  <!-- Dashed Orbit Circles -->
+  <div class="hero-orbit hero-orbit-left"></div>
+  <div class="hero-orbit hero-orbit-right"></div>
+
+  <!-- Floating Glow Dots -->
+  <div class="hero-dot hero-dot-one"></div>
+  <div class="hero-dot hero-dot-two"></div>
 
   <!-- Hero Content -->
   <div class="max-w-7xl mx-auto px-5 sm:px-6 w-full relative z-10">
@@ -285,7 +602,7 @@
           </span>
         </div>
 
-        <!-- Animated Name -->
+        <!-- Heading with Typing Animation -->
         <h1 class="reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 is-visible">
           Hi, I'm
           <br>
@@ -303,8 +620,9 @@
           with business goals and translating them into clean, functional interfaces.
         </p>
 
-        <!-- Buttons -->
+        <!-- CTA Buttons -->
         <div class="reveal flex flex-wrap justify-center gap-3 is-visible">
+
           <a
             href="#work"
             class="inline-flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] text-white text-sm font-semibold rounded-full hover:bg-[#1D4ED8] transition-colors">
@@ -321,12 +639,14 @@
             <i class="fa-solid fa-download"></i>
             Download Resume
           </a>
+
         </div>
 
       </div>
     </div>
   </div>
 </section>
+
 
 
     <section id="work" class="py-24 sm:py-32">
