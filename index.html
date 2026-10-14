@@ -156,6 +156,91 @@
     -webkit-column-break-inside: avoid;
   }
 </style>
+  <style>
+    
+/* Typing Animation */
+.name-typing {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  border-right: 4px solid #2563EB;
+  padding-right: 3px;
+  animation:
+    name-typing 1.2s steps(7, end) 0.4s forwards,
+    cursor-blink 0.7s step-end infinite;
+}
+
+@keyframes name-typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 7ch;
+  }
+}
+
+@keyframes cursor-blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Soft Animated Glow */
+.hero-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(75px);
+  z-index: 0;
+  will-change: transform;
+}
+
+.hero-glow-one {
+  width: 300px;
+  height: 300px;
+  background: rgba(37, 99, 235, 0.13);
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: glow-float 8s ease-in-out infinite alternate;
+}
+
+.hero-glow-two {
+  width: 220px;
+  height: 220px;
+  background: rgba(126, 214, 198, 0.12);
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: glow-float 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glow-float {
+  0% {
+    translate: -35px -15px;
+    scale: 0.95;
+  }
+  100% {
+    translate: 35px 20px;
+    scale: 1.1;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .name-typing {
+    width: 7ch;
+    animation: none;
+    border-right: none;
+  }
+
+  .hero-glow {
+    animation: none;
+  }
+}
+
+  </style>
 </head>
 
 <body>
@@ -174,19 +259,25 @@
 
   <main>
     
-<section id="home" class="relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden">
+
+<section id="home" class="hero-section relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden">
+
   <!-- Background Grid -->
   <div
     class="absolute inset-0 pointer-events-none opacity-70"
     style="background-image:linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);background-size:64px 64px">
   </div>
 
+  <!-- Animated Background Glow -->
+  <div class="hero-glow hero-glow-one"></div>
+  <div class="hero-glow hero-glow-two"></div>
+
   <!-- Hero Content -->
-  <div class="max-w-7xl mx-auto px-5 sm:px-6 w-full relative">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 w-full relative z-10">
     <div class="flex justify-center">
       <div class="w-full max-w-3xl text-center">
 
-        <!-- Availability Status -->
+        <!-- Availability -->
         <div class="reveal inline-flex items-center justify-center gap-2 mb-8 is-visible">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span class="text-sm font-medium text-[#6B7280]">
@@ -194,11 +285,11 @@
           </span>
         </div>
 
-        <!-- Heading -->
+        <!-- Animated Name -->
         <h1 class="reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 is-visible">
           Hi, I'm
           <br>
-          <span class="text-[#2563EB]">Amalia.</span>
+          <span class="name-typing text-[#2563EB]">Amalia.</span>
         </h1>
 
         <!-- Subtitle -->
@@ -212,7 +303,7 @@
           with business goals and translating them into clean, functional interfaces.
         </p>
 
-        <!-- CTA Buttons -->
+        <!-- Buttons -->
         <div class="reveal flex flex-wrap justify-center gap-3 is-visible">
           <a
             href="#work"
@@ -236,6 +327,7 @@
     </div>
   </div>
 </section>
+
 
     <section id="work" class="py-24 sm:py-32">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
